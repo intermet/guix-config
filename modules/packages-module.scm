@@ -17,12 +17,19 @@
   #:use-module (gnu packages xorg)
   #:use-module (gnu packages certs)
   #:use-module (gnu packages ssh)
+  #:use-module (gnu packages rust-apps)
+  #:use-module (gnu packages video)
+  #:use-module (gnu packages suckless)
+  #:use-module (gnu packages freedesktop)
+  #:use-module (my-channel)
   #:export (my-packages))
+
+
 
 (define my-packages
   (list
    vim
-   emacs
+   emacs-next-treesitter
    kitty
    git
    xorg-server
@@ -36,4 +43,11 @@
    feh
    alsa-utils
    openssh
+   exa
+   mpv
+   yt-dlp
+   ffmpeg
+   dmenu
+   streamlink
+   xdg-utils
    ))
