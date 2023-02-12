@@ -5,6 +5,9 @@
 	(gnu packages shells)
     (packages-module)
     (services-module)
+    (srfi srfi-1)
+    (guix channels)
+    (guix inferior)
 )
 
 (use-modules (packages-module)
@@ -15,9 +18,31 @@
  (timezone "America/New_York")
  (keyboard-layout (keyboard-layout "us"))
  (host-name "lenovo")
- (kernel linux)
+
+  (kernel
+    (let*
+      ((channels
+        (list (channel
+               (name 'guix)
+               (url "https://git.savannah.gnu.org/git/guix.git")
+               (commit "3c075ffd82a64e185579aa94e03be020faeebb4"))
+              (channel
+               (name 'nonguix)
+               (url "https://gitlab.com/nonguix/nonguix")
+               (commit "748ec7f8d3f86d27e3bad50987771200230e49be"))
+              (channel
+               (name 'z)
+               (url "https://github.com/intermet/guix-channel")
+               (commit "d8279f14aeabdaf4cba331babd54d19525e4eb7e"))
+              ))
+       (inferior
+        (inferior-for-channels channels)))
+      (first (lookup-inferior-packages inferior "linux" "6.1.8"))))
+
+ 
  (initrd microcode-initrd)
- (firmware (list linux-firmware))
+ (firmware (cons* iwlwifi-firmware
+                  %base-firmware))
 
  (users (cons* (user-account
                 (name "ziyed")

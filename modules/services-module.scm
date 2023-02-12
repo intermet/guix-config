@@ -29,7 +29,28 @@
    my-dhcp-client-service
    ))
 
+(define %substitute-urls
+  (list "https://substitutes.nonguix.org"))
+
+(define %substitute-keys
+  (list (local-file "./substitutes-signing-keys/nonguix.pub")))
+
+(define (add-substitute-server services)
+  (modify-services %desktop-services
+      (guix-service-type config =>
+                        (guix-configuration
+                          (inherit config)
+                          (substitute-urls
+                            (append %substitute-urls
+                                    %default-substitute-urls))
+                          (authorized-keys
+                            (append %substitute-keys
+                                    %default-authorized-guix-keys))))))
+
 (define my-services
   (append
    my-network-services
    my-desktop-services))
+
+;; (define my-services
+;;   (add-substitute-server my-services))
